@@ -1,0 +1,21 @@
+{
+    "name": "tuna-cucei/tuna-cucei",
+    "description": "API para la administración de Tuna de CUCEI",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Juan Carlos Gonzalez Aldana"
+        }
+    ],
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "integrante\\":"public/integrante",
+            "admin\\": "src/admin/",
+            "dao\\": "src/dao/",
+            "modelo\\": "src/modelo/",
+            "controller\\": "src/controller/"
+        }
+    }
+}
