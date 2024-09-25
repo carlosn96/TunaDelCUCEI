@@ -12,6 +12,8 @@
     "autoload": {
         "psr-4": {
             "integrante\\":"public/integrante",
+            "asistencia\\":"public/asistencia",
+            "evento\\":"public/evento",
             "admin\\": "src/admin/",
             "dao\\": "src/dao/",
             "modelo\\": "src/modelo/",

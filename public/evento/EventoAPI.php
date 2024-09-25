@@ -1,37 +1,57 @@
 <?php
 
-namespace integrante;
+namespace evento;
 
 use controller\API;
+use admin\AdminFactory;
 
-class IntegranteAPI extends API {
-    
+class EventoAPI extends API {
+
     protected function getControllerName() {
-        return "integrante";
+        return "evento";
     }
 
     public function getById(int $id) {
-        echo json_encode(['message' => "Obteniendo integrante con ID $id"]);
+        $this->sendResponse(AdminFactory::getAdminEvento()->buscarPorID($id));
     }
 
     public function getByValue(string $value) {
-        echo json_encode(['message' => "Obteniendo integrante con valor: $value"]);
+        $this->sendResponse(AdminFactory::getAdminEvento()->buscarPorNombreLugarDescripcion($value));
     }
 
     public function getAll() {
-        echo json_encode(['message' => 'Lista de todos los integrantes']);
+        $admin = AdminFactory::getAdminEvento();
+        $filter = $this->getData();
+        $this->sendResponse(
+                isset($filter["fecha_inicio"]) ?
+                        $admin->buscarPorFecha($filter["fecha_inicio"], $filter["fecha_fin"] ?? null) :
+                        $admin->listar()
+        );
     }
 
     public function create() {
-        $data = json_decode(file_get_contents("php://input"), true);
-        echo json_encode(['message' => 'Integrante creado con data: '. print_r($data)]);
+        $this->sendOperationResult(AdminFactory::getAdminEvento()->insertar($this->getData()));
     }
 
     public function update($id) {
-        echo json_encode(['message' => "Integrante con ID $id actualizado con data: ". print_r(json_decode(file_get_contents("php://input"), true))]);
+        $this->sendOperationResult(AdminFactory::getAdminEvento()->actualizar($id, $this->getData()));
     }
 
     public function delete($id) {
-        echo json_encode(['message' => "Integrante con ID $id eliminado"]);
+        $this->sendOperationResult(AdminFactory::getAdminEvento()->eliminar($id));
+    }
+
+    public function agregarParticipante($evento_id, $integrante_id) {
+        $this->sendOperationResult(AdminFactory::getAdminEvento()->insertarParticipante($evento_id, $integrante_id));
+    }
+
+    public function eliminarParticipante($evento_id, $integrante_id) {
+        $this->sendOperationResult(AdminFactory::getAdminEvento()->eliminarParticipante($evento_id, $integrante_id));
+    }
+
+    public static function register() {
+        parent::register();
+        self::addRoute(self::POST, "/{evento}/{integrante}", "agregarParticipante");
+        self::addRoute(self::DELETE, "/{evento}/{integrante}", "eliminarParticipante");
     }
 }

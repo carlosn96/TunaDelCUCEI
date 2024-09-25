@@ -1,10 +1,12 @@
 <?php
 
+namespace modelo;
+
 trait Entidad {
 
     public function toArray() {
         $array = [];
-        $reflectionClass = new ReflectionClass($this);
+        $reflectionClass = new \ReflectionClass($this);
         while ($reflectionClass) {
             foreach ($reflectionClass->getProperties() as $property) {
                 $property->setAccessible(true);

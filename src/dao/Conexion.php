@@ -45,9 +45,8 @@ class Conexion {
         return $this->conexion->query($instruccion);
     }
 
-    public function prepararInstruccion() {
-        $stat = $this->conexion->stmt_init();
-        return $stat;
+    public function prepararInstruccion($instruccion){
+        return $this->conexion->prepare($instruccion);
     }
 
     public function errorInfo() {

@@ -2,6 +2,8 @@
 
 namespace dao;
 
+use mysqli_stmt;
+
 class InstruccionPreparada {
 
     private const TIPOS_DATOS_PERMITIDOS = ["s", "i", "d", "b"];

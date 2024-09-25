@@ -2,7 +2,6 @@
 
 namespace dao;
 
-
 abstract class DAO {
 
     private $conexion;
@@ -22,6 +21,12 @@ abstract class DAO {
     protected function ejecutarInstruccion($instruccion) {
         $resultado = $this->conexion->ejecutarInstruccion($instruccion);
         return $resultado;
+    }
+
+    protected function ejecutarConsulta($instruccion, $fetchAll = true) {
+        $res = $this->conexion->ejecutarInstruccion($instruccion);
+       // error_log($this->getError());
+        return $res ? ($fetchAll ? $res->fetch_all(MYSQLI_ASSOC) : ($res->fetch_assoc() ?: [])) : [];
     }
 
     /**
@@ -73,7 +78,11 @@ abstract class DAO {
     protected function eliminarPorId($tabla, $columna, $id) {
         $instruccionDelete = "DELETE FROM " . $tabla . " WHERE " . $columna . " = ?";
         $pre = $this->prepararInstruccion($instruccionDelete);
-        $pre->agregarInt($id);
+        if (is_int($id)) {
+            $pre->agregarInt($id);
+        } else {
+            $pre->agregarString($id);
+        }
         return $pre->ejecutar();
     }
 

@@ -4,6 +4,15 @@ namespace controller;
 
 abstract class API {
 
+    protected const GET = "GET";
+    protected const POST = "POST";
+    protected const PUT = "PUT";
+    protected const DELETE = "DELETE";
+
+    protected function getData(): array {
+        return json_decode(file_get_contents("php://input"), true) ?? [];
+    }
+
     protected abstract function getControllerName();
 
     public function get($value) {
@@ -24,34 +33,41 @@ abstract class API {
 
     public abstract function update($id);
 
-    public abstract function delete($id);
+    public abstract function delete(int $id);
 
-    private function codificarRespuesta($respuesta) {
+    protected function sendResponse(array $respuesta) {
         echo json_encode($respuesta);
     }
 
-    protected function enviarRespuesta(array $respuesta) {
-        $this->codificarRespuesta($respuesta);
+    protected function sendOperationResult(bool $isResultCorrect) {
+        $this->sendResponse(["msg" => $isResultCorrect ? "Operation Complete" : "An error has occurred"]);
     }
 
-    protected function enviarResultadoOperacion(bool $esResultadoCorrecto) {
-        $this->enviarRespuesta(["msg" => $esResultadoCorrecto ? "Operacion Completa" : "Ha ocurrido un error"]);
-    }
-
-    protected function enviarRespuestaStr(string $respuesta) {
-        $this->enviarRespuesta(["response" => $respuesta]);
+    protected function sendMessage(string $respuesta) {
+        $this->sendResponse(["message" => $respuesta]);
     }
 
     public static function register() {
         $instance = new static();
         $controllerName = $instance->getControllerName();
         $routes = [
-            ['method' => 'GET', 'route' => $controllerName, 'callback' => [$instance, 'getAll']],
-            ['method' => 'GET', 'route' => $controllerName . '/{id}', 'callback' => [$instance, 'get']],
-            ['method' => 'POST', 'route' => $controllerName, 'callback' => [$instance, 'create']],
-            ['method' => 'PUT', 'route' => $controllerName . '/{id}', 'callback' => [$instance, 'update']],
-            ['method' => 'DELETE', 'route' => $controllerName . '/{id}', 'callback' => [$instance, 'delete']]
+            ['method' => self::GET, 'route' => $controllerName, 'callback' => [$instance, 'getAll']],
+            ['method' => self::GET, 'route' => $controllerName . '/{id}', 'callback' => [$instance, 'get']],
+            ['method' => self::POST, 'route' => $controllerName, 'callback' => [$instance, 'create']],
+            ['method' => self::PUT, 'route' => $controllerName . '/{id}', 'callback' => [$instance, 'update']],
+            ['method' => self::DELETE, 'route' => $controllerName . '/{id}', 'callback' => [$instance, 'delete']]
         ];
         Router::register($routes);
+    }
+
+    protected static function addRoute(string $method, string $route, string $callback) {
+        $instance = new static();
+        Router::register([
+            [
+                'method' => $method,
+                'route' => $instance->getControllerName() . $route,
+                'callback' => [$instance, $callback]
+            ]
+        ]);
     }
 }

@@ -1,37 +1,70 @@
 <?php
 
-namespace integrante;
+namespace asistencia;
 
 use controller\API;
+use admin\AdminFactory;
 
-class IntegranteAPI extends API {
-    
+class AsistenciaAPI extends API {
+
     protected function getControllerName() {
-        return "integrante";
+        return "asistencia";
     }
 
-    public function getById(int $id) {
-        echo json_encode(['message' => "Obteniendo integrante con ID $id"]);
+    /**
+     * Obtiene la lista de asistencias para un evento específico.
+     *
+     * @param int $idEvento ID del evento para el que se listan las asistencias.
+     */
+    public function getById(int $idEvento) {
+        $this->sendResponse(AdminFactory::getAdminAsistencia()->listarAsistentesPorEvento($idEvento));
+    }
+
+    /**
+     * Obtiene la lista de faltas para un evento específico.
+     *
+     * @param int $idEvento ID del evento para el que se listan las faltas.
+     */
+    public function getFaltasById(int $idEvento) {
+        $this->sendResponse(AdminFactory::getAdminAsistencia()->listarFaltantesPorEvento($idEvento));
     }
 
     public function getByValue(string $value) {
-        echo json_encode(['message' => "Obteniendo integrante con valor: $value"]);
+        
     }
 
     public function getAll() {
-        echo json_encode(['message' => 'Lista de todos los integrantes']);
+        
     }
 
     public function create() {
-        $data = json_decode(file_get_contents("php://input"), true);
-        echo json_encode(['message' => 'Integrante creado con data: '. print_r($data)]);
+        
     }
 
-    public function update($id) {
-        echo json_encode(['message' => "Integrante con ID $id actualizado con data: ". print_r(json_decode(file_get_contents("php://input"), true))]);
+    /**
+     * Actualiza la asistencia de un integrante en un evento en especifico
+     *
+     * @param int $integrante ID del integrante.
+     */
+    public function update($integrante) {
+        $data = $this->getData();
+        $asistencia = $data["asistencia"] ?? 0;
+        $evento = $data["evento"] ?? 0;
+        $this->sendOperationResult(
+                AdminFactory::getAdminAsistencia()->actualizarAsistencia(
+                        $integrante,
+                        $evento,
+                        $asistencia
+                )
+        );
     }
 
     public function delete($id) {
-        echo json_encode(['message' => "Integrante con ID $id eliminado"]);
+        
+    }
+
+    public static function register() {
+        parent::register();
+        self::addRoute(self::GET, "/faltas/{evento}", "getFaltasById");
     }
 }

@@ -3,35 +3,43 @@
 namespace integrante;
 
 use controller\API;
+use admin\AdminFactory;
 
 class IntegranteAPI extends API {
-    
+
     protected function getControllerName() {
         return "integrante";
     }
 
     public function getById(int $id) {
-        echo json_encode(['message' => "Obteniendo integrante con ID $id"]);
+        $this->sendResponse(AdminFactory::getAdminIntegrante()->buscarPorID($id));
     }
 
     public function getByValue(string $value) {
-        echo json_encode(['message' => "Obteniendo integrante con valor: $value"]);
+        if ($value === "getRanges") {
+            $this->sendResponse(AdminFactory::getAdminIntegrante()->getRangos());
+        } else {
+            $this->sendResponse(AdminFactory::getAdminIntegrante()->buscarPorNombreMote($value));
+        }
     }
 
     public function getAll() {
-        echo json_encode(['message' => 'Lista de todos los integrantes']);
+        $this->sendResponse(AdminFactory::getAdminIntegrante()->listar());
     }
 
     public function create() {
-        $data = json_decode(file_get_contents("php://input"), true);
-        echo json_encode(['message' => 'Integrante creado con data: '. print_r($data)]);
+        $this->sendOperationResult(AdminFactory::getAdminIntegrante()->insertar($this->getData()));
     }
 
     public function update($id) {
-        echo json_encode(['message' => "Integrante con ID $id actualizado con data: ". print_r(json_decode(file_get_contents("php://input"), true))]);
+        $this->sendOperationResult(AdminFactory::getAdminIntegrante()->actualizar($id, $this->getData()));
     }
 
     public function delete($id) {
-        echo json_encode(['message' => "Integrante con ID $id eliminado"]);
+        $this->sendOperationResult(AdminFactory::getAdminIntegrante()->eliminar($id));
+    }
+
+    public function getRangos() {
+        
     }
 }
