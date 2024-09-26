@@ -6,6 +6,8 @@ use dao\DAO;
 
 abstract class Admin {
 
+    public const SIN_INFORMACION = null;
+
     protected $dao;
 
     public function __construct(DAO $dao) {

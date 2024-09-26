@@ -15,6 +15,11 @@ class IntegranteDAO extends DAO {
         $sql = "WHERE nombre LIKE $campoBusqueda OR mote LIKE $campoBusqueda";
         return $this->buscarPorCampo($sql);
     }
+    
+    public function buscarPorCorreo($correoElectronico) {
+        $sql = "WHERE correo_electronico = $correoElectronico";
+        return $this->buscarPorCampo($sql);
+    }
 
     public function buscarPorID($id) {
         return $this->buscarPorCampo("WHERE integrante_id = $id", false);

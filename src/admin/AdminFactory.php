@@ -13,6 +13,9 @@ class AdminFactory {
     public static function getAdminIntegrante(): AdminIntegrante {
         return self::getOrCreateInstance(AdminIntegrante::class);
     }
+    public static function getAdminUsuario(): AdminUsuario {
+        return self::getOrCreateInstance(AdminUsuario::class);
+    }
 
     public static function getAdminEvento(): AdminEvento {
         return self::getOrCreateInstance(AdminEvento::class);

@@ -16,10 +16,12 @@ class IntegranteAPI extends API {
     }
 
     public function getByValue(string $value) {
-        if ($value === "getRanges") {
-            $this->sendResponse(AdminFactory::getAdminIntegrante()->getRangos());
-        } else {
-            $this->sendResponse(AdminFactory::getAdminIntegrante()->buscarPorNombreMote($value));
+        switch ($value) {
+            case "getRanges":
+                $this->sendResponse(AdminFactory::getAdminIntegrante()->getRangos());
+                break;
+            default :
+                $this->sendResponse(AdminFactory::getAdminIntegrante()->buscarPorNombreMote($value));
         }
     }
 
@@ -39,7 +41,22 @@ class IntegranteAPI extends API {
         $this->sendOperationResult(AdminFactory::getAdminIntegrante()->eliminar($id));
     }
 
-    public function getRangos() {
-        
+    public function autenticar() {
+        $data = $this->getData();
+        $correo = $data["correo"];
+        $contrasenia = $data["contrasenia"];
+        $usuario = AdminFactory::getAdminUsuario()->autenticar($correo);
+        $statusCode = self::CODIGO_RESPUESTA_INFORMACION_INCORRECTA;
+        $respuesta = self::RESPUESTA_VACIA;
+        if ($usuario) {
+            $statusCode = password_verify($contrasenia, $usuario->getContrasenia()) ? self::CODIGO_RESPUESTA_NO_ERROR : self::CODIGO_RESPUESTA_NO_AUTORIZADO;
+            $respuesta = $usuario->toArray();
+        }
+        $this->sendResponse($respuesta, $statusCode);
+    }
+
+    public static function register() {
+        parent::register();
+        self::addRoute(self::POST, "/autenticar", "autenticar");
     }
 }
