@@ -55,4 +55,7 @@ class AdminIntegrante extends Admin {
     public function getRangos() {
         return $this->dao->getRangos();
     }
+    public function getInstruments() {
+        return $this->dao->getInstruments();
+    }
 }

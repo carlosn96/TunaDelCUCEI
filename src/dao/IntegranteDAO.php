@@ -9,13 +9,14 @@ class IntegranteDAO extends DAO {
     private const INSERTAR = "CALL insertar_" . self::NOMBRE_TABLA . " (?, ?, ?, ?, ?)";
     private const ACTUALIZAR = "CALL actualizar_" . self::NOMBRE_TABLA . " (?, ?, ?, ?, ?, ?)";
     private const CONSULTAR_RANGOS = "SELECT * FROM listar_rangos";
+    private const CONSULTAR_INSTRUMENTOS = "SELECT * FROM instrumento";
 
     public function buscarPorNombreMote($valorBuscado) {
         $campoBusqueda = "'%$valorBuscado%'";
         $sql = "WHERE nombre LIKE $campoBusqueda OR mote LIKE $campoBusqueda";
         return $this->buscarPorCampo($sql);
     }
-    
+
     public function buscarPorCorreo($correoElectronico) {
         $sql = "WHERE correo_electronico = $correoElectronico";
         return $this->buscarPorCampo($sql);
@@ -61,5 +62,9 @@ class IntegranteDAO extends DAO {
     public function getRangos() {
         $rangos = $this->ejecutarConsulta(self::CONSULTAR_RANGOS);
         return explode(",", $rangos[0]["rango"]);
+    }
+
+    public function getInstruments() {
+        return $this->ejecutarConsulta(self::CONSULTAR_INSTRUMENTOS);
     }
 }
