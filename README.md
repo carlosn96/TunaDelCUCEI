@@ -27,32 +27,31 @@ La API de Tuna del CUCEI permite gestionar y consultar información sobre los in
       "instrumentos": ["Guitarra", "Mandolina"]
     }
   ]
-- **GET `/integrante`**  
-- **GET `/integrante/{id}`** 
 
-Retorna un objeto con la información del integrante identificado por {id}. Si el ID no existe, retorna un array vacío [].
-```json
-{
-  "id": 1,
-  "nombre": "Juan Pérez",
-  "mote": "El Puma",
-  "fechaIngreso": "2022-05-12",
-  "rango": "Tuno",
-  "instrumentos": ["Guitarra", "Mandolina"]
-}
+- **GET `/integrante/{id}`** 
+  Retorna un objeto con la información del integrante identificado por {id}. Si el ID no existe, retorna un array vacío [].
+  ```json
+  {
+    "id": 1,
+    "nombre": "Juan Pérez",
+    "mote": "El Puma",
+    "fechaIngreso": "2022-05-12",
+    "rango": "Tuno",
+    "instrumentos": ["Guitarra", "Mandolina"]
+  }
 
 ### Eventos
 - **GET `/evento`** 
-```json
-[
-  {
-    "id": 1,
-    "nombre": "Serenata de Bienvenida",
-    "fechaHora": "2024-10-01 20:00",
-    "lugar": "CUCEI",
-    "descripcion": "Evento para recibir a los nuevos aspirantes."
-  }
-]
+  ```json
+  [
+    {
+      "id": 1,
+      "nombre": "Serenata de Bienvenida",
+      "fechaHora": "2024-10-01 20:00",
+      "lugar": "CUCEI",
+      "descripcion": "Evento para recibir a los nuevos aspirantes."
+    }
+  ]
 - **GET `/evento/{id}`**
 Retorna un objeto con la información del evento identificado por {id}. Si el ID no existe, retorna un array vacío [].
 
