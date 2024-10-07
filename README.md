@@ -53,38 +53,35 @@ La API de Tuna del CUCEI permite gestionar y consultar información sobre los in
     }
   ]
 - **GET `/evento/{id}`**
-Retorna un objeto con la información del evento identificado por {id}. Si el ID no existe, retorna un array vacío [].
-
-```json
-{
-  "id": 1,
-  "nombre": "Serenata de Bienvenida",
-  "fechaHora": "2024-10-01 20:00",
-  "lugar": "CUCEI",
-  "descripcion": "Evento para recibir a los nuevos aspirantes."
-}
-### Asistencias
-- **GET `/asistencia/{id}`**
-
-Retorna un array de objetos con los integrantes que asistieron al evento identificado por {id}. Si el evento no existe o no hay asistencias, retorna un array vacío [].
-```json
-
-[
+  Retorna un objeto con la información del evento identificado por {id}. Si el ID no existe, retorna un array vacío [].
+  ```json
   {
     "id": 1,
-    "nombre": "Juan Pérez",
-    "mote": "El Puma"
+    "nombre": "Serenata de Bienvenida",
+    "fechaHora": "2024-10-01 20:00",
+    "lugar": "CUCEI",
+    "descripcion": "Evento para recibir a los nuevos aspirantes."
   }
-]
+
+### Asistencias
+- **GET `/asistencia/{id}`**
+  Retorna un array de objetos con los integrantes que asistieron al evento identificado por {id}. Si el evento no existe o no hay asistencias, retorna un array vacío [].
+  ```json
+  [
+    {
+      "id": 1,
+      "nombre": "Juan Pérez",
+      "mote": "El Puma"
+    }
+  ]
 
 - **GET `/asistencia/faltas/{id}`**
-Retorna un array de objetos con los integrantes que faltaron al evento identificado por {id}. Si el evento no existe o no hay faltas, retorna un array vacío [].
-
-```json
-[
-  {
-    "id": 2,
-    "nombre": "Carlos López",
-    "mote": "El Lobo"
-  }
-]
+  Retorna un array de objetos con los integrantes que faltaron al evento identificado por {id}. Si el evento no existe o no hay faltas, retorna un array vacío [].
+  ```json
+  [
+    {
+      "id": 2,
+      "nombre": "Carlos López",
+      "mote": "El Lobo"
+    }
+  ]
